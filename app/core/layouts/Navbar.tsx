@@ -25,20 +25,29 @@ import logout from "app/auth/mutations/logout"
 import Link from "next/link"
 import { Routes } from "@blitzjs/next"
 
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <ChakraLink
-    px={2}
-    py={1}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
-    href={"#"}
-  >
-    {children}
-  </ChakraLink>
+const NavItems = [{ name: "Projekte", href: "/projects" }]
+
+const NavLink = ({ children, href }: { children: ReactNode; href: string }) => (
+  <Link href={href} passHref>
+    <ChakraLink
+      _hover={{
+        textDecoration: "none",
+        bg: useColorModeValue("gray.200", "gray.700"),
+      }}
+    >
+      {children}
+    </ChakraLink>
+  </Link>
 )
+
+const NavLinks = () => {
+  const list = NavItems.map((item, i) => (
+    <NavLink key={i} href={item.href}>
+      {item.name}
+    </NavLink>
+  ))
+  return <>{list}</>
+}
 
 const UserInfo = () => {
   const currentUser = useCurrentUser()
@@ -104,11 +113,21 @@ export default function Nav() {
   return (
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+        <Flex h={14} alignItems={"center"} justifyContent={"space-between"}>
           <Box>
-            <Stack direction={"row"} spacing={7}>
-              <Text>asdqwe</Text>
-              <NavLink>asdqwe</NavLink>
+            <Stack h={14} direction={"row"} spacing={7} alignItems={"center"}>
+              <Link href={"/"} passHref>
+                <ChakraLink
+                  _hover={{
+                    textDecoration: "none",
+                    bg: useColorModeValue("gray.200", "gray.700"),
+                  }}
+                >
+                  <Text fontWeight={"extrabold"}>UBC-Manager</Text>
+                </ChakraLink>
+              </Link>
+
+              <NavLinks />
             </Stack>
           </Box>
 
